@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MainPage from './Components/MainPage/MainPage';
+import CandidaturesListe from './Components/lcandidatures_liste/lcandidatures_liste';
+import AjouterCandidature from './Components/AjouterCandidature/AjouterCandidature';
+import EditCandidature from './Components/EditCandidature/EditCandidature'; // Importer EditCandidature
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<MainPage />}>
+            <Route path="candidatures" element={<CandidaturesListe />} />
+            <Route path="/ajouter-candidature" element={<AjouterCandidature />} />
+            <Route path="/edit-candidature/:id" element={<EditCandidature />} /> {/* Nouvelle route pour l'édition */}
+          </Route>
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

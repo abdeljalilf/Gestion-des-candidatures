@@ -1,0 +1,26 @@
+.app-bar {
+    background-color: #2e8b57; /* Couleur verte */
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.app-title {
+    color: white;
+}
+
+.nav-button {
+    margin-left: 20px;
+}
+
+.main-content {
+    padding: 20px;
+    background-color: #f9f9f9; /* Couleur de fond douce */
+    color: #183020; /* Texte en vert foncé */
+}
+
+h2 {
+    color: #2e8b57; /* Couleur de titre */
+}

@@ -1,0 +1,68 @@
+.ajouter-candidature-form {
+    max-width: 600px; /* Largeur maximale du formulaire */
+    margin: 20px auto; /* Centrer le formulaire */
+    padding: 20px; /* Espacement interne */
+    border: 1px solid #ccc; /* Bordure du formulaire */
+    border-radius: 8px; /* Coins arrondis */
+    background-color: #f9f9f9; /* Couleur de fond */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Ombre */
+}
+
+h2 {
+    text-align: center; /* Centrer le titre */
+    color: #2e8b57; /* Couleur du titre */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Espacement entre les groupes de champs */
+}
+
+label {
+    display: block; /* Afficher les labels en block */
+    margin-bottom: 5px; /* Espacement en dessous des labels */
+    font-weight: bold; /* Mettre les labels en gras */
+}
+
+input[type="text"],
+input[type="date"],
+input[list="entreprises"] {
+    width: 100%; /* Largeur complète */
+    padding: 10px; /* Espacement interne */
+    border: 1px solid #ccc; /* Bordure */
+    border-radius: 4px; /* Coins arrondis */
+    box-sizing: border-box; /* Inclure padding et bordure dans la largeur */
+    font-size: 16px; /* Taille de police */
+}
+
+input[type="text"]::placeholder,
+input[type="date"]::placeholder {
+    color: #aaa; /* Couleur des placeholders */
+}
+
+input[list="entreprises"] {
+    height: 40px; /* Hauteur de l'input pour la liste */
+}
+
+input[list="entreprises"]::-webkit-inner-spin-button,
+input[list="entreprises"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Retirer les flèches pour les inputs de type date */
+}
+
+.search-input {
+    margin-bottom: 10px; /* Espacement sous l'input de recherche */
+}
+
+.submit-button {
+    background-color: #2e8b57; /* Couleur du bouton */
+    color: white; /* Couleur du texte */
+    padding: 10px 15px; /* Espacement interne */
+    border: none; /* Pas de bordure */
+    border-radius: 4px; /* Coins arrondis */
+    cursor: pointer; /* Curseur en forme de main */
+    font-size: 16px; /* Taille de police */
+    width: 100%; /* Largeur complète */
+}
+
+.submit-button:hover {
+    background-color: #246b47; /* Couleur du bouton au survol */
+}
