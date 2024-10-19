@@ -6,6 +6,14 @@ import './MainPage.css'; // Assurez-vous de créer ce fichier CSS pour le style
 const MainPage = () => {
     const navigate = useNavigate();
 
+    const handleLogout = () => {
+        // Supprime le session_id du localStorage
+        localStorage.removeItem('session_id');
+        
+        // Redirige vers la page de login
+        navigate('/login');
+    };
+
     return (
         <div>
             <AppBar position="static" className="app-bar">
@@ -17,10 +25,9 @@ const MainPage = () => {
                     <Button color="inherit" onClick={() => navigate('/ajouter-candidature')} className="nav-button">
                         Ajouter une Candidature
                     </Button>
-                    {/* 
-                    <Button color="inherit" onClick={() => navigate('/parametres')} className="nav-button">
-                        Paramètres
-                    </Button> */}
+                    <Button color="inherit" onClick={handleLogout} className="nav-button">
+                        Déconnexion
+                    </Button>
                 </Toolbar>
             </AppBar>
             <Outlet />

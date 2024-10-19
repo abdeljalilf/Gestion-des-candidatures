@@ -8,11 +8,18 @@ const CandidaturesListe = () => {
     const [candidatures, setCandidatures] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+    const session_id = localStorage.getItem('session_id'); // Récupérer l'ID de session
+
 
     useEffect(() => {
         const fetchCandidatures = async () => {
             try {
-                const response = await axios.get(`${apiBaseUrl}/Gestion_des_candidatures/backend/routes/get_candidatures.php`);
+                const response = await axios.get(`${apiBaseUrl}/Gestion_des_candidatures/backend/routes/get_candidatures.php`,
+                    {
+                        headers: {
+                            Authorization: session_id // Envoie le session_id dans l'Authorization
+                        }
+                    });
                 setCandidatures(Array.isArray(response.data) ? response.data : []);
             } catch (error) {
                 console.error('Erreur lors de la récupération des candidatures :', error);

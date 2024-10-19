@@ -2,9 +2,24 @@
 // En-têtes pour autoriser les requêtes depuis d'autres domaines (CORS)
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json; charset=UTF-8');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+// Gestion des requêtes OPTIONS
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    exit; // Arrête l'exécution pour les requêtes OPTIONS
+}
 
 // Connexion à la base de données
 include '../db/db_connect.php';
+include '../Login/session_util.php'; // Inclusion de la vérification de session
+
+// Vérification de session
+$session = checkSession($conn);
+if (!$session) {
+    http_response_code(401); // Non autorisé si la session est invalide
+    exit;
+}
 
 // Vérification de l'ID de la candidature dans la requête
 if (isset($_GET['id']) && !empty($_GET['id'])) {
@@ -53,4 +68,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     // Si l'ID de la candidature n'est pas fourni
     echo json_encode(['message' => 'ID de la candidature non fourni.']);
 }
+
+$conn->close();
+
 ?>

@@ -5,8 +5,8 @@ import CandidaturesListe from './Components/lcandidatures_liste/lcandidatures_li
 import AjouterCandidature from './Components/AjouterCandidature/AjouterCandidature';
 import EditCandidature from './Components/EditCandidature/EditCandidature';
 import CandidatureDetails from './Components/CandidatureDetails/CandidatureDetails';
-import Login from './Components/Login/Login'; // Importer le composant Login
-import { Outlet } from 'react-router-dom'; // Importer Outlet
+import Login from './Components/Login/Login';
+import PrivateRoute from './Components/Login/PrivateRoute';
 
 function App() {
   return (
@@ -14,13 +14,13 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<MainPage />}>
-            <Route index element={<CandidaturesListe />} /> {/* Route par défaut */}
-            <Route path="candidatures" element={<CandidaturesListe />} />
-            <Route path="ajouter-candidature" element={<AjouterCandidature />} />
-            <Route path="edit-candidature/:id" element={<EditCandidature />} />
-            <Route path="candidature-details/:id" element={<CandidatureDetails />} />
-            <Route path="/login" element={<Login />} /> {/* Route pour la page de connexion */}
-            <Route path="*" element={<CandidaturesListe />} /> {/* Redirect en cas d'URL non trouvée */}
+            <Route index element={<PrivateRoute element={<CandidaturesListe />} />} />
+            <Route path="candidatures" element={<PrivateRoute element={<CandidaturesListe />} />} />
+            <Route path="ajouter-candidature" element={<PrivateRoute element={<AjouterCandidature />} />} />
+            <Route path="edit-candidature/:id" element={<PrivateRoute element={<EditCandidature />} />} />
+            <Route path="candidature-details/:id" element={<PrivateRoute element={<CandidatureDetails />} />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<PrivateRoute element={<CandidaturesListe />} />} />
           </Route>
         </Routes>
       </div>
