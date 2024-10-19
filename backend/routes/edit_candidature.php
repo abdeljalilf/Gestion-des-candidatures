@@ -35,6 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
         // L'entreprise existe, récupérer son ID
         $row = $result->fetch_assoc();
         $entrepriseId = $row['id'];
+
+        // Mettre à jour les informations de l'entreprise
+        $queryUpdateEntreprise = "UPDATE entreprises SET adresse = ?, contact = ?, secteur = ? WHERE id = ?";
+        $stmtUpdateEntreprise = $conn->prepare($queryUpdateEntreprise);
+        $stmtUpdateEntreprise->bind_param("sssi", $adresseEntreprise, $contactEntreprise, $secteurEntreprise, $entrepriseId);
+        $stmtUpdateEntreprise->execute();
+        $stmtUpdateEntreprise->close();
     } else {
         // L'entreprise n'existe pas, l'ajouter
         $queryInsertEntreprise = "INSERT INTO entreprises (nom, adresse, contact, secteur) VALUES (?, ?, ?, ?)";
@@ -49,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
         $stmtInsertEntreprise->close();
     }
 
-    // 2. Mise à jour des informations de la candidature dans la table 'candidatures'
+    // Mise à jour des informations de la candidature dans la table 'candidatures'
     $queryCandidature = "UPDATE candidatures 
                          SET entreprise_id = ?, poste = ?, date_de_candidature = ?, statut = ?, remarques = ?, rappel = ? 
                          WHERE id = ?";
