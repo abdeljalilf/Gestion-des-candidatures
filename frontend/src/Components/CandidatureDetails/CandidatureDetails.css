@@ -1,0 +1,67 @@
+.candidature-details {
+    padding: 30px;
+    max-width: 700px;
+    margin: 50px auto; /* Centrer avec un margin top */
+    background-color: #ffffff; /* Fond blanc */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    font-family: 'Arial', sans-serif; /* Utiliser une police simple */
+}
+
+h2 {
+    text-align: center;
+    color: #183020; /* Vert foncé */
+    font-size: 2em;
+    margin-bottom: 20px; /* Espace en dessous */
+}
+
+.details-container {
+    margin-top: 15px;
+}
+
+.details-container p {
+    margin: 15px 0;
+    line-height: 1.6;
+    font-size: 1.1em; /* Taille de police légèrement plus grande */
+    padding: 10px;
+    border-left: 4px solid #2e8b57; /* Bordure à gauche pour accentuer */
+    background-color: #f9f9f9; /* Fond gris clair pour les paragraphes */
+    border-radius: 5px; /* Coins arrondis pour les paragraphes */
+}
+
+.remarques p {
+    margin: 0; /* Supprime les marges pour les paragraphes de remarques */
+    padding: 0; /* Supprime le padding pour les paragraphes de remarques */
+    background: none; /* Supprime le fond pour les paragraphes de remarques */
+    border: none; /* Supprime la bordure pour les paragraphes de remarques */
+}
+
+/* Autres styles si nécessaire */
+
+
+.remarques {
+    margin: 15px 0;
+    border-left: 4px solid #2e8b57; /* Bordure à gauche pour accentuer */
+    background-color: #f9f9f9; /* Fond gris clair pour les remarques */
+    padding: 10px;
+    border-radius: 5px; /* Coins arrondis pour les remarques */
+}
+
+strong {
+    color: #2e8b57; /* Vert */
+}
+
+@media (max-width: 600px) {
+    .candidature-details {
+        padding: 20px;
+        margin: 20px; /* Réduire la marge sur les petits écrans */
+    }
+
+    h2 {
+        font-size: 1.5em; /* Ajuster la taille de la police sur mobile */
+    }
+
+    .details-container p {
+        font-size: 1em; /* Réduire légèrement la taille de la police sur mobile */
+    }
+}

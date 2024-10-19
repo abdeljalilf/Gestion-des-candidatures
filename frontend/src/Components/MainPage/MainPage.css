@@ -1,5 +1,5 @@
 .app-bar {
-    background-color: #2e8b57; /* Couleur verte */
+    background-color: #2e8b57 !important;  /* Couleur verte */
 }
 
 .toolbar {
@@ -22,5 +22,5 @@
 }
 
 h2 {
-    color: #2e8b57; /* Couleur de titre */
+    color: #2e8b57 !important; /* Couleur de titre */
 }

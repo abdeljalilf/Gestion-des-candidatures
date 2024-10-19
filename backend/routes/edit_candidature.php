@@ -4,36 +4,67 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    // Handle preflight request
-    exit(0);
+    exit(0); // Handle preflight request
 }
 
-include '../db/db_connect.php'; // Assurez-vous que ce fichier contient votre connexion à la base de données.
+include '../db/db_connect.php'; // Connexion à la base de données
 
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $data = json_decode(file_get_contents("php://input"));
-    
-    // Récupération des données de la candidature à mettre à jour
-    $id = $data->id;
-    $entreprise = $data->entreprise;
+
+    // Récupération des données pour la mise à jour de la candidature
+    $idCandidature = $data->id; // ID de la candidature à mettre à jour
+    $nomEntreprise = $data->entreprise_nom; // Nom de l'entreprise
+    $adresseEntreprise = $data->adresse; // Adresse de l'entreprise
+    $contactEntreprise = $data->contact; // Contact de l'entreprise
+    $secteurEntreprise = $data->secteur; // Secteur de l'entreprise
     $poste = $data->poste;
-    $date_de_candidature = $data->date_de_candidature;
+    $dateDeCandidature = $data->date_de_candidature;
     $statut = $data->statut;
     $remarques = $data->remarques;
     $rappel = $data->rappel;
 
-    // Requête pour mettre à jour la candidature
-    $query = "UPDATE candidatures SET entreprise = ?, poste = ?, date_de_candidature = ?, statut = ?, remarques = ?, rappel = ? WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ssssssi", $entreprise, $poste, $date_de_candidature, $statut, $remarques, $rappel, $id);
+    // Vérifier si l'entreprise existe déjà
+    $queryCheckEntreprise = "SELECT id FROM entreprises WHERE nom = ?";
+    $stmtCheckEntreprise = $conn->prepare($queryCheckEntreprise);
+    $stmtCheckEntreprise->bind_param("s", $nomEntreprise);
+    $stmtCheckEntreprise->execute();
+    $result = $stmtCheckEntreprise->get_result();
 
-    if ($stmt->execute()) {
+    if ($result->num_rows > 0) {
+        // L'entreprise existe, récupérer son ID
+        $row = $result->fetch_assoc();
+        $entrepriseId = $row['id'];
+    } else {
+        // L'entreprise n'existe pas, l'ajouter
+        $queryInsertEntreprise = "INSERT INTO entreprises (nom, adresse, contact, secteur) VALUES (?, ?, ?, ?)";
+        $stmtInsertEntreprise = $conn->prepare($queryInsertEntreprise);
+        $stmtInsertEntreprise->bind_param("ssss", $nomEntreprise, $adresseEntreprise, $contactEntreprise, $secteurEntreprise);
+        if ($stmtInsertEntreprise->execute()) {
+            $entrepriseId = $conn->insert_id; // Récupérer l'ID de la nouvelle entreprise
+        } else {
+            echo json_encode(['error' => 'Erreur lors de l\'ajout de l\'entreprise.']);
+            exit();
+        }
+        $stmtInsertEntreprise->close();
+    }
+
+    // 2. Mise à jour des informations de la candidature dans la table 'candidatures'
+    $queryCandidature = "UPDATE candidatures 
+                         SET entreprise_id = ?, poste = ?, date_de_candidature = ?, statut = ?, remarques = ?, rappel = ? 
+                         WHERE id = ?";
+    $stmtCandidature = $conn->prepare($queryCandidature);
+    $stmtCandidature->bind_param("isssssi", $entrepriseId, $poste, $dateDeCandidature, $statut, $remarques, $rappel, $idCandidature);
+
+    // Exécuter la mise à jour de la candidature
+    if ($stmtCandidature->execute()) {
         echo json_encode(['success' => true]);
     } else {
         echo json_encode(['error' => 'Erreur lors de la mise à jour de la candidature.']);
     }
 
-    $stmt->close();
+    $stmtCandidature->close();
+    $stmtCheckEntreprise->close();
     $conn->close();
 } else {
     echo json_encode(['error' => 'Méthode non autorisée.']);

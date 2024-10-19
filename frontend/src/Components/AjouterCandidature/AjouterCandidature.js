@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import axios from 'axios';
+import ReactQuill from 'react-quill'; // Importer React Quill
+import 'react-quill/dist/quill.snow.css'; // Importer le style de Quill
 import './AjouterCandidature.css'; // Assurez-vous de créer ce fichier CSS pour le style
 
 const AjouterCandidature = () => {
     const [entreprises, setEntreprises] = useState([]);
     const [selectedEntreprise, setSelectedEntreprise] = useState('');
     const [nouvelleEntreprise, setNouvelleEntreprise] = useState('');
+    const [adresse, setAdresse] = useState('');
+    const [contact, setContact] = useState('');
+    const [secteur, setSecteur] = useState('');
     const [poste, setPoste] = useState('');
     const [dateDeCandidature, setDateDeCandidature] = useState('');
     const [statut, setStatut] = useState('');
@@ -41,6 +46,9 @@ const AjouterCandidature = () => {
             const response = await axios.post(`${apiBaseUrl}/Gestion_des_candidatures/backend/routes/add_candidature.php`, {
                 entreprise_id: entrepriseId,
                 nom_nouvelle_entreprise: nouvelleEntreprise,
+                adresse,
+                contact,
+                secteur,
                 poste,
                 date_de_candidature: dateDeCandidature,
                 statut,
@@ -62,10 +70,13 @@ const AjouterCandidature = () => {
     const resetForm = () => {
         setSelectedEntreprise('');
         setNouvelleEntreprise('');
+        setAdresse('');
+        setContact('');
+        setSecteur('');
         setPoste('');
         setDateDeCandidature('');
         setStatut('');
-        setRemarques('');
+        setRemarques(''); // Réinitialiser les remarques
         setRappel('');
         setSearchTerm(''); // Réinitialiser le champ de recherche
     };
@@ -79,7 +90,6 @@ const AjouterCandidature = () => {
             <h2>Ajouter une Candidature</h2>
             <div className="form-group">
                 <label htmlFor="entreprise">Sélectionnez une entreprise ou entrez une nouvelle entreprise:</label>
-                
                 <datalist id="entreprises">
                     <option value="Autre entreprise" />
                     {filteredEntreprises.map((entreprise) => (
@@ -98,9 +108,15 @@ const AjouterCandidature = () => {
                             if (selected) {
                                 setSelectedEntreprise(selected.id);
                                 setNouvelleEntreprise(''); // Réinitialiser la nouvelle entreprise
+                                setAdresse(selected.adresse); // Remplir l'adresse de l'entreprise sélectionnée
+                                setContact(selected.contact); // Remplir le contact de l'entreprise sélectionnée
+                                setSecteur(selected.secteur); // Remplir le secteur de l'entreprise sélectionnée
                             } else {
                                 setSelectedEntreprise('');
                                 setNouvelleEntreprise(entrepriseNom); // Saisir comme nouvelle entreprise
+                                setAdresse(''); // Réinitialiser l'adresse
+                                setContact(''); // Réinitialiser le contact
+                                setSecteur(''); // Réinitialiser le secteur
                             }
                         }
                     }}
@@ -117,6 +133,43 @@ const AjouterCandidature = () => {
                         style={{ display: selectedEntreprise === '' && nouvelleEntreprise === "" ? "block" : "none" }} // Afficher seulement si Autre entreprise est choisi
                     />
                 </div>
+            )}
+            {selectedEntreprise === '' && (
+                <>
+                    <div className="form-group">
+                        <label htmlFor="adresse">Adresse:</label>
+                        <input
+                            type="text"
+                            id="adresse"
+                            value={adresse}
+                            onChange={(e) => setAdresse(e.target.value)}
+                            placeholder="Adresse de l'entreprise"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="contact">Contact:</label>
+                        <input
+                            type="text"
+                            id="contact"
+                            value={contact}
+                            onChange={(e) => setContact(e.target.value)}
+                            placeholder="Contact (email, téléphone)"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="secteur">Secteur:</label>
+                        <input
+                            type="text"
+                            id="secteur"
+                            value={secteur}
+                            onChange={(e) => setSecteur(e.target.value)}
+                            placeholder="Secteur d'activité"
+                            required
+                        />
+                    </div>
+                </>
             )}
             <div className="form-group">
                 <label htmlFor="poste">Poste:</label>
@@ -149,11 +202,11 @@ const AjouterCandidature = () => {
             </div>
             <div className="form-group">
                 <label htmlFor="remarques">Remarques:</label>
-                <input
-                    type="text"
+                <ReactQuill 
                     id="remarques"
                     value={remarques}
-                    onChange={(e) => setRemarques(e.target.value)}
+                    onChange={setRemarques}
+                    placeholder="Ajoutez des remarques ici..."
                 />
             </div>
             <div className="form-group">

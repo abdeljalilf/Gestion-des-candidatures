@@ -1,3 +1,4 @@
+/* Styles pour le formulaire */
 .ajouter-candidature-form {
     max-width: 600px; /* Largeur maximale du formulaire */
     margin: 20px auto; /* Centrer le formulaire */
@@ -52,6 +53,24 @@ input[list="entreprises"]::-webkit-outer-spin-button {
     margin-bottom: 10px; /* Espacement sous l'input de recherche */
 }
 
+/* Styles spécifiques pour le champ de remarques */
+textarea {
+    width: 100%; /* Largeur complète */
+    padding: 10px; /* Espacement interne */
+    border: 1px solid #ccc; /* Bordure */
+    border-radius: 4px; /* Coins arrondis */
+    box-sizing: border-box; /* Inclure padding et bordure dans la largeur */
+    font-size: 16px; /* Taille de police */
+    height: 100px; /* Hauteur par défaut du textarea */
+    resize: vertical; /* Permettre le redimensionnement vertical uniquement */
+    color: #333; /* Couleur du texte */
+}
+
+textarea::placeholder {
+    color: #aaa; /* Couleur des placeholders dans le textarea */
+}
+
+/* Styles pour le bouton d'ajout */
 .submit-button {
     background-color: #2e8b57; /* Couleur du bouton */
     color: white; /* Couleur du texte */
