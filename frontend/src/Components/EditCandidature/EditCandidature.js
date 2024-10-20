@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Assurez-vous d'importer les styles pour ReactQuill
+import './EditCandidature.css';
 
 const EditCandidature = () => {
     const { id } = useParams();
@@ -14,29 +17,27 @@ const EditCandidature = () => {
         poste: '',
         date_de_candidature: '',
         statut: '',
-        remarques: '',
         rappel: ''
     });
+    const [remarques, setRemarques] = useState(''); // Remarques avec éditeur de texte
     const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
-    // Récupérer les données de la candidature et de l'entreprise depuis l'API
     useEffect(() => {
         const fetchCandidature = async () => {
             try {
                 const response = await axios.get(`${apiBaseUrl}/Gestion_des_candidatures/backend/routes/candidature_to_edit.php?id=${id}`);
-                // Pré-remplir le formulaire avec les données récupérées
                 setCandidature({
                     entreprise_id: response.data.entreprise_id,
-                    entreprise_nom: response.data.entreprise_nom,   // Nom de l'entreprise
-                    adresse: response.data.adresse,                // Adresse de l'entreprise
-                    contact: response.data.contact,                // Contact de l'entreprise
-                    secteur: response.data.secteur,                // Secteur de l'entreprise
+                    entreprise_nom: response.data.entreprise_nom,
+                    adresse: response.data.adresse,
+                    contact: response.data.contact,
+                    secteur: response.data.secteur,
                     poste: response.data.poste,
                     date_de_candidature: response.data.date_de_candidature,
                     statut: response.data.statut,
-                    remarques: response.data.remarques,
                     rappel: response.data.rappel
                 });
+                setRemarques(response.data.remarques); // Récupérer et définir les remarques
             } catch (error) {
                 console.error('Erreur lors de la récupération de la candidature :', error);
             }
@@ -45,31 +46,29 @@ const EditCandidature = () => {
         fetchCandidature();
     }, [id, apiBaseUrl]);
 
-    // Gestion de la soumission du formulaire
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
             await axios.put(`${apiBaseUrl}/Gestion_des_candidatures/backend/routes/edit_candidature.php`, {
-                id: id, // ID de la candidature
+                id: id,
                 entreprise_id: candidature.entreprise_id,
-                entreprise_nom: candidature.entreprise_nom,   // Nom de l'entreprise
-                adresse: candidature.adresse,                // Adresse de l'entreprise
-                contact: candidature.contact,                // Contact de l'entreprise
-                secteur: candidature.secteur,                // Secteur de l'entreprise
+                entreprise_nom: candidature.entreprise_nom,
+                adresse: candidature.adresse,
+                contact: candidature.contact,
+                secteur: candidature.secteur,
                 poste: candidature.poste,
                 date_de_candidature: candidature.date_de_candidature,
                 statut: candidature.statut,
-                remarques: candidature.remarques,
+                remarques: remarques, // Envoi des remarques avec formatage
                 rappel: candidature.rappel
             });
             alert('Candidature mise à jour avec succès.');
-            navigate('/candidatures'); // Rediriger vers la page d'accueil après la mise à jour
+            navigate('/candidatures');
         } catch (error) {
             console.error('Erreur lors de la mise à jour de la candidature :', error);
         }
     };
 
-    // Gestion du changement de valeur des champs du formulaire
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCandidature(prevState => ({
@@ -79,96 +78,104 @@ const EditCandidature = () => {
     };
 
     return (
-        <div>
-            <h2>Éditer Candidature</h2>
+        <div className="edit-candidature-container">
+            <h2 className="edit-candidature-title">Éditer Candidature</h2>
             {candidature ? (
-                <form onSubmit={handleUpdate}>
-                    <label>
+                <form className="edit-candidature-form" onSubmit={handleUpdate}>
+                    <label className="edit-candidature-label">
                         Nom de l'entreprise:
                         <input
+                            className="edit-candidature-input"
                             type="text"
                             name="entreprise_nom"
                             value={candidature.entreprise_nom}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="edit-candidature-label">
                         Adresse de l'entreprise:
                         <input
+                            className="edit-candidature-input"
                             type="text"
                             name="adresse"
                             value={candidature.adresse}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="edit-candidature-label">
                         Contact de l'entreprise:
                         <input
+                            className="edit-candidature-input"
                             type="text"
                             name="contact"
                             value={candidature.contact}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="edit-candidature-label">
                         Secteur de l'entreprise:
                         <input
+                            className="edit-candidature-input"
                             type="text"
                             name="secteur"
                             value={candidature.secteur}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="edit-candidature-label">
                         Poste:
                         <input
+                            className="edit-candidature-input"
                             type="text"
                             name="poste"
                             value={candidature.poste}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="edit-candidature-label">
                         Date de Candidature:
                         <input
+                            className="edit-candidature-input"
                             type="date"
                             name="date_de_candidature"
                             value={candidature.date_de_candidature}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
+                    <label className="edit-candidature-label">
                         Statut:
                         <input
+                            className="edit-candidature-input"
                             type="text"
                             name="statut"
                             value={candidature.statut}
                             onChange={handleChange}
                         />
                     </label>
-                    <label>
-                        Remarques:
-                        <input
-                            type="text"
-                            name="remarques"
-                            value={candidature.remarques}
-                            onChange={handleChange}
+                    <div className="form-group">
+                        <label htmlFor="remarques">Remarques:</label>
+                        <ReactQuill 
+                            id="remarques"
+                            value={remarques}
+                            onChange={setRemarques}
+                            placeholder="Ajoutez des remarques ici..."
                         />
-                    </label>
-                    <label>
+                    </div>
+                    <label className="edit-candidature-label">
                         Rappel:
                         <input
+                            className="edit-candidature-input"
                             type="date"
                             name="rappel"
                             value={candidature.rappel}
                             onChange={handleChange}
                         />
                     </label>
-                    <button type="submit" >Mettre à jour</button>
-                    <button type="button" onClick={() => navigate('/candidatures')}>Annuler</button>
+                    <button className="edit-candidature-button edit-candidature-submit" type="submit">Mettre à jour</button>
+                    <button className="edit-candidature-button edit-candidature-cancel" type="button" onClick={() => navigate('/candidatures')}>Annuler</button>
                 </form>
             ) : (
-                <p>Chargement...</p>
+                <p className="edit-candidature-loading">Chargement...</p>
             )}
         </div>
     );

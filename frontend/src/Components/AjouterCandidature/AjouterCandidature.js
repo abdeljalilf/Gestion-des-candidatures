@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ReactQuill from 'react-quill'; // Importer React Quill
-import 'react-quill/dist/quill.snow.css'; // Importer le style de Quill
-import './AjouterCandidature.css'; // Assurez-vous de créer ce fichier CSS pour le style
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import './AjouterCandidature.css';
 
 const AjouterCandidature = () => {
     const [entreprises, setEntreprises] = useState([]);
@@ -40,22 +40,36 @@ const AjouterCandidature = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         let entrepriseId = selectedEntreprise;
-
-        // Ajout de la candidature
+    
+        // Vérification de la valeur de rappel
+        const rappelValue = rappel || null; // Ou une valeur par défaut
+    // Vérifiez les valeurs avant l'envoi
+    console.log({
+        entreprise_id: entrepriseId,
+        nom_nouvelle_entreprise: nouvelleEntreprise,
+        adresse,
+        contact,
+        secteur,
+        poste,
+        date_de_candidature: dateDeCandidature,
+        statut,
+        remarques,
+        rappel: rappelValue,
+    });
         try {
             const response = await axios.post(`${apiBaseUrl}/Gestion_des_candidatures/backend/routes/add_candidature.php`, {
                 entreprise_id: entrepriseId,
                 nom_nouvelle_entreprise: nouvelleEntreprise,
-                adresse,
-                contact,
-                secteur,
+                adresse, // Incluez l'adresse
+                contact, // Incluez le contact
+                secteur, // Incluez le secteur
                 poste,
                 date_de_candidature: dateDeCandidature,
                 statut,
                 remarques,
-                rappel,
+                rappel: rappelValue, // Envoie la valeur vérifiée
             });
-
+    
             if (response.data.error) {
                 alert('Erreur : ' + response.data.error);
             } else {
@@ -76,14 +90,28 @@ const AjouterCandidature = () => {
         setPoste('');
         setDateDeCandidature('');
         setStatut('');
-        setRemarques(''); // Réinitialiser les remarques
+        setRemarques('');
         setRappel('');
-        setSearchTerm(''); // Réinitialiser le champ de recherche
+        setSearchTerm('');
     };
 
     const filteredEntreprises = entreprises.filter(entreprise =>
         entreprise.nom.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    // Configuration des modules de ReactQuill
+    const modules = {
+        toolbar: [
+            [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{ 'color': [] }, { 'background': [] }], // Ajout de la couleur de texte et de l'arrière-plan
+            [{ 'align': [] }],
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // Ajout du contrôle de la taille du texte
+            ['link', 'image'],
+            ['clean']                                         
+        ],
+    };
 
     return (
         <form className="ajouter-candidature-form" onSubmit={handleSubmit}>
@@ -101,22 +129,22 @@ const AjouterCandidature = () => {
                     onChange={(e) => {
                         const entrepriseNom = e.target.value;
                         if (entrepriseNom === "Autre entreprise") {
-                            setSelectedEntreprise(''); // Réinitialiser l'entreprise sélectionnée
-                            setNouvelleEntreprise(''); // Réinitialiser la nouvelle entreprise
+                            setSelectedEntreprise('');
+                            setNouvelleEntreprise('');
                         } else {
                             const selected = entreprises.find(entreprise => entreprise.nom === entrepriseNom);
                             if (selected) {
                                 setSelectedEntreprise(selected.id);
-                                setNouvelleEntreprise(''); // Réinitialiser la nouvelle entreprise
-                                setAdresse(selected.adresse); // Remplir l'adresse de l'entreprise sélectionnée
-                                setContact(selected.contact); // Remplir le contact de l'entreprise sélectionnée
-                                setSecteur(selected.secteur); // Remplir le secteur de l'entreprise sélectionnée
+                                setNouvelleEntreprise('');
+                                setAdresse(selected.adresse);
+                                setContact(selected.contact);
+                                setSecteur(selected.secteur);
                             } else {
                                 setSelectedEntreprise('');
-                                setNouvelleEntreprise(entrepriseNom); // Saisir comme nouvelle entreprise
-                                setAdresse(''); // Réinitialiser l'adresse
-                                setContact(''); // Réinitialiser le contact
-                                setSecteur(''); // Réinitialiser le secteur
+                                setNouvelleEntreprise(entrepriseNom);
+                                setAdresse('');
+                                setContact('');
+                                setSecteur('');
                             }
                         }
                     }}
@@ -130,7 +158,6 @@ const AjouterCandidature = () => {
                         value={nouvelleEntreprise}
                         onChange={(e) => setNouvelleEntreprise(e.target.value)}
                         placeholder="Nom de la nouvelle entreprise"
-                        style={{ display: selectedEntreprise === '' && nouvelleEntreprise === "" ? "block" : "none" }} // Afficher seulement si Autre entreprise est choisi
                     />
                 </div>
             )}
@@ -144,7 +171,6 @@ const AjouterCandidature = () => {
                             value={adresse}
                             onChange={(e) => setAdresse(e.target.value)}
                             placeholder="Adresse de l'entreprise"
-                            required
                         />
                     </div>
                     <div className="form-group">
@@ -155,7 +181,6 @@ const AjouterCandidature = () => {
                             value={contact}
                             onChange={(e) => setContact(e.target.value)}
                             placeholder="Contact (email, téléphone)"
-                            required
                         />
                     </div>
                     <div className="form-group">
@@ -166,7 +191,6 @@ const AjouterCandidature = () => {
                             value={secteur}
                             onChange={(e) => setSecteur(e.target.value)}
                             placeholder="Secteur d'activité"
-                            required
                         />
                     </div>
                 </>
@@ -188,7 +212,7 @@ const AjouterCandidature = () => {
                     id="dateDeCandidature"
                     value={dateDeCandidature}
                     onChange={(e) => setDateDeCandidature(e.target.value)}
-                    required
+                    required // Ajoutez cette ligne
                 />
             </div>
             <div className="form-group">
@@ -206,6 +230,7 @@ const AjouterCandidature = () => {
                     id="remarques"
                     value={remarques}
                     onChange={setRemarques}
+                    modules={modules}  // Ajout des modules
                     placeholder="Ajoutez des remarques ici..."
                 />
             </div>

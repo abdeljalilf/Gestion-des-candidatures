@@ -14,7 +14,7 @@ CREATE TABLE candidatures (
     poste VARCHAR(255),
     date_de_candidature DATE,
     statut VARCHAR(150),              -- Statut de la candidature (ex: "en attente", "acceptée")
-    remarques VARCHAR(455),
+    remarques VARCHAR(1155),
     rappel DATE,
     FOREIGN KEY (entreprise_id) REFERENCES entreprises(id)
 );

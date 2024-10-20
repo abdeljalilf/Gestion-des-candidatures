@@ -1,0 +1,128 @@
+/* EditCandidature.css */
+
+.edit-candidature-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit-candidature-title {
+    text-align: center;
+    color: #2e8b57;
+    margin-bottom: 20px;
+}
+
+.edit-candidature-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-candidature-label {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #183020;
+}
+
+.edit-candidature-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.edit-candidature-button {
+    padding: 10px;
+    margin-top: 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-candidature-submit {
+    background-color: #2e8b57;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.edit-candidature-cancel {
+    background-color: #ccc;
+}
+
+.edit-candidature-button:hover {
+    background-color: #183020;
+}
+
+.edit-candidature-cancel:hover {
+    background-color: #aaa;
+}
+
+.edit-candidature-loading {
+    text-align: center;
+    font-size: 18px;
+    color: #183020;
+}
+/* EditCandidature.css */
+
+/* Conteneur de la zone des remarques */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #183020; /* Vert foncé */
+}
+
+.form-group .ql-container {
+    border-radius: 5px;
+    border: 1px solid #2e8b57; /* Bordure verte */
+    min-height: 150px;
+    background-color: white;
+}
+
+.form-group .ql-editor {
+    padding: 10px;
+    font-size: 14px;
+    color: #183020; /* Texte en vert foncé */
+    min-height: 140px;
+}
+
+.form-group .ql-toolbar {
+    background-color: #2e8b57; /* Fond vert pour la barre d'outils */
+    border-radius: 5px 5px 0 0;
+    border: 1px solid #2e8b57;
+}
+
+.form-group .ql-toolbar button {
+    color: white;
+}
+
+.form-group .ql-toolbar button:hover {
+    background-color: #183020; /* Vert foncé au survol */
+}
+
+/* Boutons Mettre à jour et Annuler */
+button {
+    background-color: #2e8b57; /* Vert */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #183020; /* Vert foncé */
+}

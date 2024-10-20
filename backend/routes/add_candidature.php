@@ -18,12 +18,16 @@ $data = json_decode(file_get_contents("php://input"));
 // Récupérer les données
 $entrepriseId = $data->entreprise_id;
 $nomNouvelleEntreprise = $data->nom_nouvelle_entreprise;
+$adresse = $data->adresse; // Récupération de l'adresse
+$contact = $data->contact; // Récupération du contact
+$secteur = $data->secteur; // Récupération du secteur
 $poste = $data->poste;
 $dateDeCandidature = $data->date_de_candidature;
 $statut = $data->statut;
-$remarques = $data->remarques;
+$remarques = $data->remarques;  // Les remarques peuvent contenir du HTML
 $rappel = $data->rappel;
 
+// Vérifier si une nouvelle entreprise est à ajouter
 if (empty($entrepriseId) && !empty($nomNouvelleEntreprise)) {
     // Vérifier si l'entreprise existe déjà
     $query = "SELECT id FROM entreprises WHERE nom = ?";
@@ -38,9 +42,9 @@ if (empty($entrepriseId) && !empty($nomNouvelleEntreprise)) {
         $entrepriseId = $row['id'];
     } else {
         // Ajouter la nouvelle entreprise
-        $insertQuery = "INSERT INTO entreprises (nom) VALUES (?)";
+        $insertQuery = "INSERT INTO entreprises (nom, adresse, contact, secteur) VALUES (?, ?, ?, ?)";
         $insertStmt = $conn->prepare($insertQuery);
-        $insertStmt->bind_param("s", $nomNouvelleEntreprise);
+        $insertStmt->bind_param("ssss", $nomNouvelleEntreprise, $adresse, $contact, $secteur); // Ajoutez les paramètres
         if ($insertStmt->execute()) {
             $entrepriseId = $insertStmt->insert_id; // Récupérer l'ID de la nouvelle entreprise
         } else {
@@ -50,10 +54,17 @@ if (empty($entrepriseId) && !empty($nomNouvelleEntreprise)) {
     }
 }
 
-// Ajouter la candidature
-$candidatureQuery = "INSERT INTO candidatures (entreprise_id, poste, date_de_candidature, statut, remarques, rappel) VALUES (?, ?, ?, ?, ?, ?)";
+
+// Préparez votre requête d'insertion
+$candidatureQuery = "INSERT INTO candidatures (entreprise_id, poste, date_de_candidature, statut, remarques" . ($rappel ? ", rappel" : "") . ") VALUES (?, ?, ?, ?, ?" . ($rappel ? ", ?" : "") . ")";
+
 $candidatureStmt = $conn->prepare($candidatureQuery);
-$candidatureStmt->bind_param("isssss", $entrepriseId, $poste, $dateDeCandidature, $statut, $remarques, $rappel);
+if ($rappel) {
+    $candidatureStmt->bind_param("issss" . ($rappel ? "s" : ""), $entrepriseId, $poste, $dateDeCandidature, $statut, $remarques, $rappel);
+} else {
+    $candidatureStmt->bind_param("issss", $entrepriseId, $poste, $dateDeCandidature, $statut, $remarques);
+}
+
 if ($candidatureStmt->execute()) {
     echo json_encode(['success' => true]);
 } else {
