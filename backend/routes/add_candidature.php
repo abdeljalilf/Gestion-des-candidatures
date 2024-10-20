@@ -5,13 +5,13 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 include '../db/db_connect.php';
-include '../Login/session_util.php'; // Inclusion de la vérification de session
+// include '../Login/session_util.php'; // Inclusion de la vérification de session
 
-// Vérification de session
-$session = checkSession($conn);
-if (!$session) {
-    exit;
-}
+// // Vérification de session
+// $session = checkSession($conn);
+// if (!$session) {
+//     exit;
+// }
 
 $data = json_decode(file_get_contents("php://input"));
 

@@ -14,15 +14,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-include '../Login/session_util.php'; // Inclusion de la vérification de session
+// include '../Login/session_util.php'; // Inclusion de la vérification de session
 
-// Vérification de session
-$session = checkSession($conn);
-if (!$session) {
-    http_response_code(401); // Non autorisé si la session est invalide
-    echo json_encode(['message' => 'Non autorisé, session invalide.']);
-    exit;
-}
+// // Vérification de session
+// $session = checkSession($conn);
+// if (!$session) {
+//     http_response_code(401); // Non autorisé si la session est invalide
+//     echo json_encode(['message' => 'Non autorisé, session invalide.']);
+//     exit;
+// }
 
 // Préparer la requête SQL pour récupérer les candidatures
 $sql = "SELECT candidatures.id, entreprises.nom AS entreprise, candidatures.poste, 

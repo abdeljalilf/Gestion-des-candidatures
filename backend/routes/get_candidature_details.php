@@ -12,14 +12,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 // Connexion à la base de données
 include '../db/db_connect.php';
-include '../Login/session_util.php'; // Inclusion de la vérification de session
+// include '../Login/session_util.php'; // Inclusion de la vérification de session
 
-// Vérification de session
-$session = checkSession($conn);
-if (!$session) {
-    http_response_code(401); // Non autorisé si la session est invalide
-    exit;
-}
+// // Vérification de session
+// $session = checkSession($conn);
+// if (!$session) {
+//     http_response_code(401); // Non autorisé si la session est invalide
+//     exit;
+// }
 
 // Vérification de l'ID de la candidature dans la requête
 if (isset($_GET['id']) && !empty($_GET['id'])) {

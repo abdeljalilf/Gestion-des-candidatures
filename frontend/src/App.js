@@ -19,9 +19,9 @@ function App() {
             <Route path="ajouter-candidature" element={<PrivateRoute element={<AjouterCandidature />} />} />
             <Route path="edit-candidature/:id" element={<PrivateRoute element={<EditCandidature />} />} />
             <Route path="candidature-details/:id" element={<PrivateRoute element={<CandidatureDetails />} />} />
-            <Route path="/login" element={<Login />} />
             <Route path="*" element={<PrivateRoute element={<CandidaturesListe />} />} />
           </Route>
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>
